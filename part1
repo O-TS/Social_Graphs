@@ -1,0 +1,78 @@
+import numpy as np
+
+mi = 2
+sigma = 0.125
+
+s = np.random.normal(mi, sigma, 5000)
+
+print(s)
+
+hst = np.histogram(s, bins=10)
+bins = hst[1]
+counts = hst[0]
+
+print(hst)
+
+print('Array lengths: Counts =', len(hst[0]), ' / Bins =', len(hst[1]))
+
+abs(mi - np.mean(s))
+abs(sigma - np.std(s, ddof=1))
+
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+#Creating the Bins and Histogram
+count, bins, ignored = plt.hist(s, 30, density=True)
+
+# Plotting the distribution curve
+plt.plot(bins, 1/(sigma * np.sqrt(2 * np.pi)) * np.exp( - (bins - mi)**2 / (2 * sigma**2) ), linewidth=3, color='r')
+
+plt.show()
+
+p = np.random.poisson(lam=(10), size=(5000))
+print (p)
+min = np.amin(p)
+max = np.amax(p)
+print('Minimum =', min, 'Maximum =', max)
+
+# Arranging bins and adding one element to fix the difference in the lengths.
+v = np.arange(min , max+1)
+print(v)
+
+p, bins = np.histogram(p, v)
+print('Counts:', p)
+print('bins:', bins)
+print('------')
+print('length of Counts:', len(counts))
+print('length of bins:', len(bins))
+
+# Plot the distribution using plt.bar
+plt.figure(figsize=(10,7))
+plt.bar(bins[:-1], p) 
+plt.title("Binned data (Poisson)")
+plt.ylabel("frequency")
+plt.xlabel(" Value")
+plt.show()
+
+from networkx import nx
+n = 5000
+k = 10
+p = k/(n-1)
+
+# Calculating probability, rounded to 3 decimal places
+print("The probability is:", round(p,3))
+
+# Creating the graph using nx.erdos_renyi_graph
+
+G = nx.erdos_renyi_graph(n,p)
+
+# Extracting the degree distribution using nx.degree_histogram
+
+G_distro = nx.degree_histogram(G)
+
+# Plot degree distribution using plt.bar
+plt.bar(np.arange(len(G_distro)), G_distro)
+plt.title("Distribution ")
+plt.ylabel("Frequency")
+plt.xlabel("Value") 
+plt.show()
